@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>500 - Server Error | Axioflo</title>
+        <link rel="stylesheet" href="./index.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        />
+        <style>
+            .error-page {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 40px 24px;
+                position: relative;
+                z-index: 1;
+            }
+            .error-code {
+                font-family: "Sora", sans-serif;
+                font-size: clamp(100px, 22vw, 180px);
+                font-weight: 800;
+                line-height: 1;
+                color: var(--gold);
+                letter-spacing: -6px;
+                opacity: 0.15;
+                position: absolute;
+                pointer-events: none;
+                user-select: none;
+            }
+            .error-icon {
+                width: 72px;
+                height: 72px;
+                background: rgba(245, 166, 35, 0.1);
+                border: 1px solid rgba(245, 166, 35, 0.25);
+                border-radius: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 28px;
+                color: var(--gold);
+                margin-bottom: 24px;
+                position: relative;
+            }
+            .error-label {
+                font-size: 11px;
+                font-weight: 600;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 12px;
+                position: relative;
+            }
+            .error-title {
+                font-family: "Sora", sans-serif;
+                font-size: clamp(28px, 6vw, 48px);
+                font-weight: 800;
+                letter-spacing: -1.5px;
+                line-height: 1.05;
+                margin-bottom: 16px;
+                position: relative;
+            }
+            .error-desc {
+                font-size: 15px;
+                color: var(--muted);
+                max-width: 400px;
+                line-height: 1.65;
+                font-weight: 300;
+                margin-bottom: 36px;
+                position: relative;
+            }
+            .error-actions {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+                position: relative;
+            }
+            .btn-primary {
+                background: var(--gold);
+                color: #0d1b4b;
+                font-family: "Sora", sans-serif;
+                font-weight: 700;
+                font-size: 14px;
+                padding: 13px 26px;
+                border-radius: 100px;
+                border: none;
+                cursor: pointer;
+                text-decoration: none;
+                transition:
+                    transform 0.2s,
+                    box-shadow 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 22px rgba(245, 166, 35, 0.38);
+            }
+            .btn-ghost {
+                background: transparent;
+                color: var(--text);
+                font-family: "Sora", sans-serif;
+                font-weight: 600;
+                font-size: 14px;
+                padding: 13px 26px;
+                border-radius: 100px;
+                border: 1.5px solid var(--border);
+                cursor: pointer;
+                text-decoration: none;
+                transition:
+                    border-color 0.2s,
+                    background 0.2s;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
+            .btn-ghost:hover {
+                border-color: var(--gold);
+                background: var(--surface);
+            }
+            #bgc {
+                position: fixed;
+                inset: 0;
+                z-index: 0;
+                pointer-events: none;
+                opacity: 0.5;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="bgc"></canvas>
+        <div class="error-page">
+            <div class="error-code">500</div>
+            <div class="error-icon">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="error-label">Error 500</div>
+            <h1 class="error-title">Server error</h1>
+            <p class="error-desc">
+                Something went wrong on our end. We're working to fix it. Try
+                again in a moment.
+            </p>
+            <div class="error-actions">
+                <a href="/" class="btn-primary"
+                    ><i class="fa-solid fa-rotate-right"></i> Try Again</a
+                >
+                <a href="mailto:support@axioflo.com" class="btn-ghost"
+                    ><i class="fa-solid fa-envelope"></i> Contact Us</a
+                >
+            </div>
+        </div>
+        <script>
+            const canvas = document.getElementById("bgc"),
+                ctx = canvas.getContext("2d");
+            let W,
+                H,
+                nodes = [];
+            function resize() {
+                W = canvas.width = window.innerWidth;
+                H = canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener("resize", resize);
+            for (let i = 0; i < 60; i++)
+                nodes.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    vx: (Math.random() - 0.5) * 0.45,
+                    vy: (Math.random() - 0.5) * 0.45,
+                    r: Math.random() * 1.8 + 0.8
+                });
+            function draw() {
+                ctx.clearRect(0, 0, W, H);
+                const nc = "rgba(245,166,35,";
+                nodes.forEach(n => {
+                    n.x += n.vx;
+                    n.y += n.vy;
+                    if (n.x < 0 || n.x > W) n.vx *= -1;
+                    if (n.y < 0 || n.y > H) n.vy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+                    ctx.fillStyle = nc + "0.55)";
+                    ctx.fill();
+                });
+                for (let i = 0; i < nodes.length; i++)
+                    for (let j = i + 1; j < nodes.length; j++) {
+                        const dx = nodes[i].x - nodes[j].x,
+                            dy = nodes[i].y - nodes[j].y,
+                            d = Math.sqrt(dx * dx + dy * dy);
+                        if (d < 140) {
+                            ctx.beginPath();
+                            ctx.moveTo(nodes[i].x, nodes[i].y);
+                            ctx.lineTo(nodes[j].x, nodes[j].y);
+                            ctx.strokeStyle = nc + (1 - d / 140) * 0.3 + ")";
+                            ctx.lineWidth = 0.7;
+                            ctx.stroke();
+                        }
+                    }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        </script>
+    </body>
+</html>
